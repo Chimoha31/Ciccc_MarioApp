@@ -4,6 +4,12 @@ html{
     font-family: 'Press Start 2P', cursive;
 }
 
+body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
 img {
     width: 100px;
     position: absolute;
