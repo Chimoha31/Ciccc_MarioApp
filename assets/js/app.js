@@ -7,14 +7,22 @@ const body = document.querySelector("body");
 
 let currentLocationX = 10;
 let currentLocationY = 10;
-let randomX = Math.random() * 10;
 let points = 0;
-let height01 = 50;
-let width01 = 50;
+let marioWidth = 50;
+let marioHeight = 50;
 
+// viewport
+const maxWidth = window.innerWidth;
+const maxHeight = window.innerHeight;
+// console.log(maxWidth);
+
+// スコアを表示
 score.textContent = `Score: ${points}`;
 body.before(score);
 
+// マリオがコインに触れた時のaudioをセット
+const sound = new Audio("/smw_coin.wav");
+sound.loop = false;
 
 // マリオがcoinにタッチ
 function isTouching(a, b) {
@@ -30,10 +38,10 @@ function isTouching(a, b) {
 }
 
 // X軸方向に動く
-const moveHorizontal = (node, steps) => {
-  currentLocationX += steps;
-  console.log(currentLocationX);
-  node.style.left = `${currentLocationX}px`;
+const moveHorizontal = (node, steps, windowWidth) => {
+    currentLocationX += steps;
+    console.log(currentLocationX);
+    node.style.left = `${currentLocationX}px`;
 };
 
 // Y軸方向に動く
@@ -42,8 +50,6 @@ const moveVertical = (node, steps) => {
   console.log(currentLocationY);
   node.style.top = `${currentLocationY}px`;
 };
-
-
 
 // keydownの上下右左のキー次第でそれぞれの方向に向かう
 window.addEventListener("keydown", function (e) {
@@ -62,7 +68,7 @@ window.addEventListener("keydown", function (e) {
     // return false;
   }
 
-//マリオがコインにタッチしたら動くようにする 
+  //マリオがコインにタッチしたらコインをランダムで違う所に配置する
   if (isTouching(mario, coin)) {
     console.log(isTouching);
     const height = Math.floor(Math.random() * window.innerHeight);
@@ -70,19 +76,18 @@ window.addEventListener("keydown", function (e) {
     coin.style.top = `${height}px`;
     coin.style.left = `${width}px`;
 
-    // ポイント加算したらブラウザに出る
+    // マリオがポイントGETしたら、表示されているポイント0から1、2、3...と加算させる
     points++;
     score.textContent = `Score: ${points}`;
 
-    // コインにタッチしたら音が鳴る
-    const sound = new Audio('/smw_coin.wav');
+    // マリオがコインにタッチしたらaudioが鳴る
     sound.play();
 
-    // marioのサイズを大きくする
-    height01 += 30;
-    width01 += 30;
+    // マリオがコインにタッチしたら、マリオのサイズを大きくする
+    marioHeight += 30;
+    marioWidth += 30;
     console.log(mario);
-    mario.style.height = `${height01}px`;
-    mario.style.width = `${width01}px`;
+    mario.style.width = `${marioWidth}px`;
+    mario.style.height = `${marioHeight}px`;
   }
 });
